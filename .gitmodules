@@ -1,3 +1,6 @@
 [submodule "mtheme"]
 	path = mtheme
 	url = https://github.com/Leonidas-from-XIV/mtheme.git
+[submodule "ocaml-logo"]
+	path = ocaml-logo
+	url = https://github.com/ocaml/ocaml-logo.git
