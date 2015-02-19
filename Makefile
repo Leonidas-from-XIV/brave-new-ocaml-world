@@ -2,10 +2,10 @@
 	ps2pdf ocaml-logo/Colour/EPS/$(basename $@).eps $@
 	pdfcrop $@ $@
 
-slides.tex: colour-transparent-logo.pdf colour-transparent-icon.pdf
-	latexmk $@
+slides.pdf: colour-transparent-logo.pdf colour-transparent-icon.pdf slides.tex
+	latexmk $(basename $@)
 
-all: slides.tex
+all: slides.pdf
 
 watch:
 	$(MAKE) all
