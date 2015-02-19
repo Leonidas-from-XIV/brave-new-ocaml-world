@@ -1,6 +1,5 @@
 %.pdf:
-	ps2pdf ocaml-logo/Colour/EPS/$(basename $@).eps $@
-	pdfcrop $@ $@
+	epstopdf --filter < ocaml-logo/Colour/EPS/$(basename $@).eps > $@
 
 slides.pdf: colour-transparent-logo.pdf colour-transparent-icon.pdf slides.tex
 	latexmk $(basename $@)
