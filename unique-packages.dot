@@ -2,8 +2,6 @@
 set xdata time
 set timefmt "%s"
 set format x "%m/%Y"
-set term png size 800,400 font "Arial,10"
-set output 'unique-packages.png
 unset key
 set style data lines
 set style fill transparent solid 0.4

@@ -1,4 +1,7 @@
 \documentclass{beamer}
+\usepackage{tikz}
+\usepackage{gnuplot-lua-tikz}
+\usepackage{gnuplottex}
 \usetheme{m}
 
 \title{Brave New OCaml World}
@@ -6,16 +9,23 @@
 \institute{Lambda Days}
 \date{25.2.2015}
 
+\pgfplotsset{compat=1.11}
+
 \logo{\includegraphics[width=1cm]{colour-transparent-icon}}
 
 \begin{document}
 
-\maketitle
+% \maketitle
 
-\begin{frame}{Who am I even?}
-  \includegraphics[width=\linewidth]{colour-transparent-logo}
+% \begin{frame}{Who am I even?}
+%   \includegraphics[width=\linewidth]{colour-transparent-logo}
 
-  Hi
+%   Hi
+% \end{frame}
+
+\begin{frame}
+  %\gnuplotloadfile[terminal=cairolatex]{unique-packages.dot}
+  \gnuplotloadfile[terminal=tikz]{unique-packages.dot}
 \end{frame}
 
 \end{document}
