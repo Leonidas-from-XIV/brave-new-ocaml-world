@@ -12,7 +12,8 @@
 \pgfplotsset{compat=1.10}
 %\pgfplotsset{compat=1.11}
 
-\logo{\includegraphics[width=1cm]{colour-transparent-icon}}
+% Not sure we even want a logo
+%\logo{\includegraphics[width=1cm]{colour-transparent-icon}}
 
 \begin{document}
 
@@ -35,11 +36,14 @@
       axis y line=left,
       enlargelimits=false,
       enlarge x limits=upper,
+      enlarge y limits=upper,
       date coordinates in=x,
       xticklabel={\month.\year},
       xticklabel style={rotate=90},
       legend entries={Total, Unique},
-      legend style={legend pos=north west}
+      legend style={legend pos=north west},
+      width=\textwidth,
+      height=.8\textheight,
       ]
 
       \addplot [color=red,fill=red!50] table {packages.csv}\closedcycle;
@@ -58,9 +62,12 @@
       axis y line=left,
       enlargelimits=false,
       enlarge x limits=upper,
+      enlarge y limits=upper,
       date coordinates in=x,
       xticklabel={\month.\year},
-      xticklabel style={rotate=90}
+      xticklabel style={rotate=90},
+      width=\textwidth,
+      height=.8\textheight,
       ]
 
       \addplot [color=blue,fill=blue!50] table {contributors.csv}\closedcycle;
