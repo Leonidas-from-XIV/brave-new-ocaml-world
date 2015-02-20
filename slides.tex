@@ -1,7 +1,7 @@
 \documentclass{beamer}
-\usepackage{tikz}
-\usepackage{gnuplot-lua-tikz}
-\usepackage{gnuplottex}
+\usepackage{pgfplots}
+
+\usepgfplotslibrary{dateplot}
 \usetheme{m}
 
 \title{Brave New OCaml World}
@@ -9,23 +9,70 @@
 \institute{Lambda Days}
 \date{25.2.2015}
 
-\pgfplotsset{compat=1.11}
+\pgfplotsset{compat=1.10}
+%\pgfplotsset{compat=1.11}
 
 \logo{\includegraphics[width=1cm]{colour-transparent-icon}}
 
 \begin{document}
 
-% \maketitle
+\maketitle
 
-% \begin{frame}{Who am I even?}
-%   \includegraphics[width=\linewidth]{colour-transparent-logo}
+\begin{frame}{Who am I even?}
+  \includegraphics[width=\linewidth]{colour-transparent-logo}
 
-%   Hi
-% \end{frame}
+  Hi
+\end{frame}
 
-\begin{frame}
-  %\gnuplotloadfile[terminal=cairolatex]{unique-packages.dot}
-  \gnuplotloadfile[terminal=tikz]{unique-packages.dot}
+\begin{frame}{OPAM stats: unique packages}
+  \begin{tikzpicture}
+    \begin{axis}[
+      xlabel=Time,
+      ylabel=Unique packages,
+      ymin=0,
+      axis x line=bottom,
+      axis y line=left,
+      date coordinates in=x,
+      xticklabel={\month.\year},
+      xticklabel style={rotate=90},
+      enlargelimits=true,
+      xmin=2012-08-21
+      ]
+
+      \addplot [color=blue,fill=blue!50] table {unique-packages.csv}\closedcycle;
+    \end{axis}
+  \end{tikzpicture}
+\end{frame}
+
+\begin{frame}{OPAM stats: packages}
+  \begin{tikzpicture}
+    \begin{axis}[
+      xlabel=Time,
+      ylabel=Packages,
+      ymin=0,
+      date coordinates in=x,
+      xticklabel={\month.\year},
+      xticklabel style={rotate=90},
+      xmin=2012-08-21]
+
+      \addplot [color=blue,fill=blue!50] table {packages.csv}\closedcycle;
+    \end{axis}
+  \end{tikzpicture}
+\end{frame}
+
+\begin{frame}{OPAM stats: OPAM repository contributors}
+  \begin{tikzpicture}
+    \begin{axis}[
+      xlabel=Time,
+      ylabel=Contributors,
+      ymin=0,
+      date coordinates in=x,
+      xticklabel={\month.\year},
+      xticklabel style={rotate=90}]
+
+      \addplot [color=blue,fill=blue!50] table {contributors.csv}\closedcycle;
+    \end{axis}
+  \end{tikzpicture}
 \end{frame}
 
 \end{document}
