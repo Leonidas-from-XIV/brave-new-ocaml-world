@@ -9,20 +9,41 @@
 \institute{Lambda Days}
 \date{25.2.2015}
 
+\titlegraphic{\includegraphics[width=\linewidth]{colour-transparent-logo}}
 \pgfplotsset{compat=1.10}
 %\pgfplotsset{compat=1.11}
 
 % Not sure we even want a logo
 %\logo{\includegraphics[width=1cm]{colour-transparent-icon}}
 
+\renewcommand{\itemBullet}{\hbox{\vrule width 1ex height 1ex}}
+\setsansfont[BoldFont={Lato}]{Lato Light}
+\newfontfamily\exclaim{Lato Black}
+
+\newfontfamily\ExtraLight{Lato Light}
+\newfontfamily\Light{Lato Light}
+\newfontfamily\Medium{Lato Medium}
 \begin{document}
 
 \maketitle
 
 \begin{frame}{Who am I even?}
-  \includegraphics[width=\linewidth]{colour-transparent-logo}
+  \begin{columns}[c]
+    \column{.5\textwidth}
+      \includegraphics[height=0.8\textheight]{programmers}
+    \column{.5\textwidth}
+      \begin{itemize}
+        \item From Technische Universität München
+        \item Introduction to Programming lecture with OCaml
+        \item Then, Bachelor Thesis: OCaml
+        \item Now, Master Thesis: OCaml
+      \end{itemize}
+  \end{columns}
+\end{frame}
 
-  Hi
+\begin{frame}{}
+  \center
+  \fontsize{70}{70} \exclaim Why?
 \end{frame}
 
 \begin{frame}{OPAM stats: packages}
