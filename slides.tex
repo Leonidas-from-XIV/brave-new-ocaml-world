@@ -32,11 +32,12 @@
       ylabel=Packages,
       ymin=0,
       xmin=2012-08-21,
-      axis x line=bottom,
-      axis y line=left,
+      %axis x line=bottom,
+      %axis y line=left,
       enlargelimits=false,
-      enlarge x limits=upper,
+      %enlarge x limits=upper,
       enlarge y limits=upper,
+      grid=major,
       date coordinates in=x,
       xticklabel={\month.\year},
       xticklabel style={rotate=90},
@@ -44,10 +45,11 @@
       legend style={legend pos=north west},
       width=\textwidth,
       height=.8\textheight,
+      ytick={0,500,...,3500},
       ]
 
-      \addplot [color=red,fill=red!50] table {packages.csv}\closedcycle;
-      \addplot [color=blue,fill=blue!50] table {unique-packages.csv}\closedcycle;
+      \addplot [color=red,fill=red!50, fill opacity=0.8] table {packages.csv}\closedcycle;
+      \addplot [color=blue,fill=blue!50, fill opacity=0.6] table {unique-packages.csv}\closedcycle;
     \end{axis}
   \end{tikzpicture}
 \end{frame}
@@ -58,16 +60,20 @@
       xlabel=Time,
       ylabel=Contributors,
       ymin=0,
-      axis x line=bottom,
-      axis y line=left,
+      %axis x line=bottom,
+      %axis y line=left,
       enlargelimits=false,
-      enlarge x limits=upper,
-      enlarge y limits=upper,
+      %enlarge x limits=upper,
+      enlarge y limits={value=0.15,upper},
+      grid=major,
       date coordinates in=x,
       xticklabel={\month.\year},
       xticklabel style={rotate=90},
       width=\textwidth,
       height=.8\textheight,
+      try min ticks=9,
+      ytick={0,50,...,300},
+      fill opacity=0.8,
       ]
 
       \addplot [color=blue,fill=blue!50] table {contributors.csv}\closedcycle;
