@@ -15,6 +15,9 @@ camel.pdf: camel.svg
 issuu.pdf: issuu.svg
 	inkscape --without-gui --export-pdf=$@ $(basename $@).svg
 
+ds.pdf: ds.eps
+	epstopdf --filter < $(basename $@).eps > $@
+
 slides.pdf: colour-transparent-logo.pdf colour-transparent-icon.pdf camel.pdf facebook.pdf citrix.pdf issuu.pdf slides.tex
 	latexmk $(basename $@)
 
