@@ -12,7 +12,10 @@ citrix.pdf: citrix.svg
 camel.pdf: camel.svg
 	inkscape --without-gui --export-pdf=$@ $(basename $@).svg
 
-slides.pdf: colour-transparent-logo.pdf colour-transparent-icon.pdf camel.pdf facebook.pdf citrix.pdf slides.tex
+issuu.pdf: issuu.svg
+	inkscape --without-gui --export-pdf=$@ $(basename $@).svg
+
+slides.pdf: colour-transparent-logo.pdf colour-transparent-icon.pdf camel.pdf facebook.pdf citrix.pdf issuu.pdf slides.tex
 	latexmk $(basename $@)
 
 watch:
