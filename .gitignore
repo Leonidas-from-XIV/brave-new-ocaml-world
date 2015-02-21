@@ -36,5 +36,6 @@
 *.bcf
 *.run.xml
 *.png
+*.jpg
 errors
 *.class
