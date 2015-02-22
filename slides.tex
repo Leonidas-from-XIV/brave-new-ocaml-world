@@ -67,10 +67,11 @@
   \includegraphics[height=1cm]{citrix}
   \includegraphics[height=1cm]{janestreet}
   \includegraphics[height=1cm]{esper}
-  \includegraphics[height=1cm]{galois}\\
+  \includegraphics[height=1cm]{galois}
   \includegraphics[height=1cm]{shiro}
   \includegraphics[height=1cm]{ds}
   \includegraphics[height=1cm]{issuu}
+  % TODO
 \end{frame}
 
 \begin{frame}{OPAM stats: packages}
@@ -132,10 +133,67 @@
 \section{Learning}
 
 \begin{frame}{Real World OCaml}
-  \includegraphics{rwo}
+  \begin{columns}[c]
+    \column{.5\textwidth}
+      \includegraphics[height=0.8\textheight]{rwo}
+    \column{.5\textwidth}
+      \begin{itemize}
+        \item The best OCaml book ever published
+        \item For more experienced developers
+        \item Broad amount of topics covered: functional programming
+          object orientation, runtim
+        \item Uses Jane Street's Core Standard library
+        \item Freely available online
+      \end{itemize}
+  \end{columns}
+\end{frame}
+
+\begin{frame}{OCaml from the very beginning}
+  \begin{columns}[c]
+    \column{.5\textwidth}
+      \includegraphics[height=0.8\textheight]{very-beginning}
+    \column{.5\textwidth}
+      \begin{itemize}
+        \item Introduction into functional programming
+        \item More geared towards novices
+        \item A bit like "The Little Schemer"
+        \item Companion book "More OCaml" available
+      \end{itemize}
+  \end{columns}
 \end{frame}
 
 \section{Editing}
+
+\begin{frame}{Editor selection}
+  \begin{columns}[t]
+    \column{.5\textwidth}
+    \begin{block}{Emacs}
+      \begin{itemize}
+        \item ocaml-mode
+        \item Tuareg
+      \end{itemize}
+    \end{block}
+    \begin{block}{Vim}
+      \begin{itemize}
+        \item OCaml syntax
+        \item Operator replacement
+      \end{itemize}
+    \end{block}
+    \begin{block}{Eclipse}
+      OCaml Development Tools
+    \end{block}
+    \column{.5\textwidth}
+    \begin{block}{Merlin}
+      Helper that \emph{understands} OCaml code. Offers \emph{sensible}
+      completion, type inference, renaming, definition location.
+      \begin{itemize}
+        \item Vim
+        \item Emacs
+        \item Sublime Text
+      \end{itemize}
+    \end{block}
+  \end{columns}
+\end{frame}
 
 \section{Building}
 
@@ -146,6 +204,8 @@
 \section{Distributing}
 
 \subsection{OPAM}
+
+\section{What's missing}
 
 \begin{frame}{Questions?}
   \centering
