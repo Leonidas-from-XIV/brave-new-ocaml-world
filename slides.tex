@@ -1,11 +1,12 @@
 \documentclass{beamer}
 \usepackage{pgfplots}
+\usepackage{minted}
 
 \usepgfplotslibrary{dateplot}
 \usetheme{m}
 
 \title{Brave New OCaml World}
-\author{Marek Kubica}
+\author{Marek Kubica @leonidasfromxiv}
 \institute{Lambda Days}
 \date{25.2.2015}
 
@@ -17,7 +18,7 @@
 %\logo{\includegraphics[width=1cm]{colour-transparent-icon}}
 
 \renewcommand{\itemBullet}{\hbox{\vrule width 1ex height 1ex}}
-\setsansfont[BoldFont={Lato}]{Lato Light}
+\setsansfont[BoldFont={Lato},ItalicFont={Lato Light Italic}]{Lato Light}
 \newfontfamily\exclaim{Lato Black}
 
 \newfontfamily\ExtraLight{Lato Light}
@@ -141,7 +142,7 @@
         \item The best OCaml book ever published
         \item For more experienced developers
         \item Broad amount of topics covered: functional programming
-          object orientation, runtim
+          object orientation, runtime
         \item Uses Jane Street's Core Standard library
         \item Freely available online
       \end{itemize}
@@ -195,15 +196,205 @@
   \end{columns}
 \end{frame}
 
+\begin{frame}{Merlin in action}
+  I wonder what the List module supports?
+
+  \pause
+  \includegraphics[width=\textwidth]{vim_complete}
+\end{frame}
+
 \section{Building}
 
-\subsection{OASIS}
+\begin{frame}{Building code sucks}
+  \begin{itemize}
+    \item Getting inter-project dependencies
+    \item Getting inter-file dependencies
+    \item Incrementally rebuilding
+    \item Build times
+    \item Compiler options
+  \end{itemize}
+  In Haskell, this is all handled by cabal
+\end{frame}
+
+\begin{frame}{Building OCaml code used to suck}
+  \begin{itemize}
+    \item .ml/.mli: source files
+    \item .o: Compiled C modules
+    \item .cmo/.cmi: Compiled modules
+    \item .cma/.cmax: Compiled module archives, native archives
+    \item .cmt: Type information annotation
+  \end{itemize}
+  \begin{itemize}
+    \item ocamlc, ocamlc.opt
+    \item ocamlopt, ocamlopt.opt
+    \item ocamldep
+    \item …
+  \end{itemize}
+  Need to compile each module, specify them in the proper order.
+\end{frame}
+
+\subsection{ocamlfind}
+
+\begin{frame}{ocamlfind}
+  The OCaml compiler knows no packages, just modules.
+  \begin{itemize}
+    \item Additional tool by Gerd Stolpman
+    \item \texttt{ocamlfind} \emph{finds} packages
+    \item Wrapper around commandline tools, \texttt{ocamlfind ocamlopt}
+    \item Adds a \texttt{-package} option
+    \item Reads information from \texttt{META} file
+    \item Universally established tool
+  \end{itemize}
+  Package/dependency problem solved.
+\end{frame}
+
+\begin{frame}{ocamlbuild}
+  Previously: no build system shipped.
+
+  Cue: OMake, obuild, ocp-build, jenga, GNU Make.
+
+  \begin{itemize}
+    \item OCaml 3.12 came with \texttt{ocamlbuild}
+    \item Ships with default rules to invoke compiler toolchain
+    \item \texttt{\_tags} file for customization
+    \item Quite alright for small to medium projects
+    \item Popular but not ubiquitous
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Too much config!}
+  So you need to write
+
+  \begin{itemize}
+    \item \texttt{META}
+    \item \texttt{\_tags}
+  \end{itemize}
+
+  If we just had a declarative tool to generate this cruft.
+\end{frame}
+
+\begin{frame}{Enter OASIS}
+  "Architecture for building OCaml libraries and applications"
+
+  \begin{itemize}
+    \item \texttt{\_oasis} file with definitions
+    \item Can generate files for \texttt{ocamlfind}, \texttt{ocamlbuild}
+    \item Supports other systems via plugin (in theory)
+    \item "One system to bind them"
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{\_oasis}
+  \texttt{\_oasis} files are easy to write
+  \begin{minted}[fontsize=\scriptsize]{text}
+OASISFormat:  0.4
+Name:         pkg
+Version:      0.12.0
+Synopsis:     Example library for LambdaDays
+Authors:      Marek Kubica
+License:      LGPL-3 with OCaml linking exception
+Plugins:      META (0.4), DevFiles (0.4)
+BuildTools:   ocamlbuild
+BuildDepends: cohttp.lwt, yojson
+
+Library pkg
+  Path:           src
+  BuildDepends:   lwt.ppx
+  Modules:        Pkg
+  ByteOpt:        -safe-string
+  NativeOpt:      -safe-string
+  CompiledObject: best
+  \end{minted}
+\end{frame}
 
 \section{Testing}
 
+\begin{frame}{Different kinds of testing}
+  \begin{itemize}
+    \item Assertion-based testing (xUnit)
+    \item Property-based testing (QuickCheck)
+    \item Enumeration-based testing (SmallCheck)
+    \item Continuous integration (Travis CI)
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Unit testing}
+  Most popular library is OUnit.
+  \begin{minted}{ocaml}
+open OUnit2
+
+let test_commutative test_ctx =
+  assert_equal (1+2) (2+1)
+
+let suite = "Example" >::: [
+  "addition" >:: test_commutative;
+]
+
+let _ = run_test_tt_main suite
+  \end{minted}
+  \texttt{pa\_ounit} syntax extension for less overhead.
+\end{frame}
+
+\begin{frame}[fragile]{Specification testing}
+  Let's check whether OCaml integers are commutative
+  \begin{minted}{ocaml}
+open QCheck
+
+let test = mk_test ~name:"commutative"
+  Arbitrary.(pair small_int small_int)
+  (fun (a, b) -> a + b = b + a)
+
+let _ = ignore @@ run test
+  \end{minted}
+  The Kaputt package supports also enumeration-based testing
+\end{frame}
+
+\begin{frame}[fragile]{Continuous integration}
+  "It works on \emph{my} machine" \pause Build it independently on Travis CI.
+
+  Add this to your \texttt{.travis.yml}, ocaml-travisci-skeleton will take care of
+  the rest (as long as your package is OPAMized).
+  \begin{minted}{yaml}
+language: c
+install: wget https://…/.travis-opam.sh
+script: bash -ex .travis-opam.sh
+env:
+- OCAML_VERSION=4.02
+- OCAML_VERSION=4.01
+- OCAML_VERSION=4.00
+- OCAML_VERSION=3.12
+  \end{minted}
+\end{frame}
+
 \section{Distributing}
 
-\subsection{OPAM}
+\begin{frame}{The need for distribution}
+  Do not reinvent the wheel, let's use existing libraries!
+
+  So, if OASIS is like Cabal, what is the equivalent to Hackage? \pause
+
+  There was a project called OASIS-DB, but it didn't work out.
+\end{frame}
+
+\begin{frame}{OPAM}
+  \begin{itemize}
+    \item OCaml PAckage Manager
+    \item Manages building \emph{compiler} and packages
+    \item Uses community-maintained Git repo with build recipes
+    \item Describes packages:
+      \begin{itemize}
+        \item Version, source tarball, hash
+        \item Dependencies, conflicts
+        \item SAT solver to solve requests
+      \end{itemize}
+    \item Does not enforce any build system, project structure
+    \item Handles updates and removals
+  \end{itemize}
+\end{frame}
+
+\section{Documenting}
+
+\section{What's coming}
 
 \section{What's missing}
 
