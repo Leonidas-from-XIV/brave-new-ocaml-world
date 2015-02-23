@@ -8,7 +8,7 @@
 
 \title{Brave New OCaml World}
 \author{Marek Kubica @leonidasfromxiv}
-\institute{Lambda Days}
+\institute{\includegraphics[width=2cm]{lambdadays}}
 \date{25.2.2015}
 
 \titlegraphic{\includegraphics[width=\linewidth]{colour-transparent-logo}}
@@ -64,8 +64,21 @@
   \end{itemize}
 \end{frame}
 
-\begin{frame}{OCaml in comparison}
-  TODO
+\begin{frame}{From a Python perspective}
+  \begin{itemize}
+    \item Stronger correctnes assurances due to type checking
+    \item Faster execution
+    \item Pattern matching
+    \item Functionally focussed community
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{From a Haskell perspective}
+  \begin{itemize}
+    \item Language with \emph{much gentler} learning curve
+    \item Module system: OCaml offers modules that can be parametrized
+      with other modules \rightarrow Functors
+  \end{itemize}
 \end{frame}
 
 \begin{frame}{js\_of\_ocaml}
@@ -489,9 +502,35 @@ env:
 \section{What's coming}
 
 \begin{frame}{Concurrency}
-  Multicore OCaml not yet a thing.
+  Multithreaded OCaml runtime not yet a thing.
 
-  TODO
+  In the works, but no definite timeframe. Libraries to parallelize execution
+  to multiple processes exist.
+
+  Who cares about threads, right? Async evented I/O! Monadic concurrency
+  libraries.
+  \begin{enumerate}
+    \item Lwt
+    \item Async
+  \end{enumerate}
+\end{frame}
+
+\begin{frame}[fragile]{Lwt in action}
+  \begin{minted}[fontsize=\small]{ocaml}
+let channels_history token ?count channel =
+  let%lwt channel_id = id_of_channel token channel in
+  endpoint "channels.history"
+    |> definitely_add "token" token
+    |> definitely_add "channel" channel_id
+    |> optionally_add "count"
+       @@ maybe string_of_int count
+    |> query
+    >|= function
+    | `Json_response d -> d |> history_obj_of_yojson
+    | #history_result as res -> res
+    | _ -> `Unknown_error
+  \end{minted}
+	\texttt{let\%lwt} is processed by a macro to work like \texttt{bind}.
 \end{frame}
 
 \begin{frame}{JVM}
@@ -534,6 +573,10 @@ env:
     \item Call count display incredibly inconvenient
     \item Buggy
   \end{itemize}
+\end{frame}
+
+\begin{frame}{Better integration}
+  TODO
 \end{frame}
 
 \begin{frame}{Questions?}
