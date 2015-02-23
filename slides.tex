@@ -52,6 +52,7 @@
     \item Static Hindley-Milner type system with inference
     \item Fast
     \item Strict
+    \item Easy to learn
     \item Quick native and byte code compilers
     \item Wide variety of platforms supported
     \item One single language (not 70 language extensions)
@@ -213,7 +214,7 @@
     \item Build times
     \item Compiler options
   \end{itemize}
-  In Haskell, this is all handled by cabal
+  In Haskell, this is all handled by Cabal
 \end{frame}
 
 \begin{frame}{Building OCaml code used to suck}
@@ -385,8 +386,9 @@ env:
       \begin{itemize}
         \item Version, source tarball, hash
         \item Dependencies, conflicts
-        \item SAT solver to solve requests
+        \item Installation scripts \& patches
       \end{itemize}
+    \item SAT solver to solve requests
     \item Does not enforce any build system, project structure
     \item Handles updates and removals
   \end{itemize}
@@ -394,9 +396,62 @@ env:
 
 \section{Documenting}
 
+\begin{frame}[fragile]{Projects need documentation}
+  OCaml goes the Javadoc route: \texttt{ocamldoc}. Shipped with the compiler.
+  \begin{minted}[fontsize=\small]{ocaml}
+(** Documentation of function
+    @param arg1 What the param is for
+    @param arg2 More documentation *)
+  \end{minted}
+  Best to be used on \texttt{.mli} (module interface) files.
+
+  Uses custom documentation markup format.
+
+  Future: OPAM-Doc to generate documentation of every installed package.
+\end{frame}
+
+\begin{frame}{OCamlOScope}
+  \begin{centering}
+    \includegraphics[width=\textwidth]{ocamloscope}
+  \end{centering}
+  "Signature goes in, function comes out — can't explain that."
+
+  API search for OCaml, like Hoogle/Hayoo. Searches top ~100 OPAM packages.
+\end{frame}
+
 \section{What's coming}
 
+\begin{frame}{Concurrency}
+  Multicore OCaml not yet a thing.
+\end{frame}
+
+\begin{frame}{JVM}
+  .NET have F\# (basically OCaml for .NET), a statically typed ML. It's a serious
+  effort by Microsoft. \pause
+
+  JVM users have… Yeti? Scala?
+
+  \begin{block}{OCaml-Java}
+    \begin{itemize}
+      \item generates JVM bytecode
+      \item based on OCaml 4.01
+      \item faster than byte code
+      \item slower than native code
+      \item early effort
+    \end{itemize}
+  \end{block}
+
+\end{frame}
+
 \section{What's missing}
+
+\begin{frame}{Debugging}
+  ocamldebug
+\end{frame}
+
+\begin{frame}{Profiling}
+  ocamlprof, gprof
+\end{frame}
 
 \begin{frame}{Questions?}
   \centering
