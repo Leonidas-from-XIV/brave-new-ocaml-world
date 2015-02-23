@@ -1,6 +1,7 @@
 \documentclass{beamer}
 \usepackage{pgfplots}
 \usepackage{minted}
+\usepackage{multicol}
 
 \usepgfplotslibrary{dateplot}
 \usetheme{m}
@@ -13,6 +14,7 @@
 \titlegraphic{\includegraphics[width=\linewidth]{colour-transparent-logo}}
 \pgfplotsset{compat=1.10}
 %\pgfplotsset{compat=1.11}
+%\defaultfontfeatures{Ligatures=TeX}
 
 % Not sure we even want a logo
 %\logo{\includegraphics[width=1cm]{colour-transparent-icon}}
@@ -50,14 +52,29 @@
 \begin{frame}{Quick feature list}
   \begin{itemize}
     \item Static Hindley-Milner type system with inference
-    \item Fast
+    \item Powerful module system
+    \item Fast in the average case
     \item Strict
     \item Easy to learn
     \item Quick native and byte code compilers
     \item Wide variety of platforms supported
-    \item One single language (not 70 language extensions)
+    \item \emph{One} single language (not 70 language extensions)
     \item Macro system
     \item Good backwards compatibility
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{OCaml in comparison}
+  TODO
+\end{frame}
+
+\begin{frame}{js\_of\_ocaml}
+  \begin{itemize}
+    \item Take OCaml byte code, generate JavaScript code
+    \item Surprisingly fast
+    \item OCaml REPL in browser
+    \item Alt-Ergo — a SMT solver in OCaml — running in browser
+    \item Coupled with Ocsigen: OCaml on the front and backend, code sharing
   \end{itemize}
 \end{frame}
 
@@ -65,47 +82,25 @@
   \#38 language on GitHub
 
   % logos
-  \includegraphics[height=1cm]{facebook}
-  \includegraphics[height=1cm]{citrix}
-  \includegraphics[height=1cm]{janestreet}
-  \includegraphics[height=1cm]{esper}
-  \includegraphics[height=1cm]{galois}
-  \includegraphics[height=1cm]{shiro}
-  \includegraphics[height=1cm]{ds}
-  \includegraphics[height=1cm]{issuu}
+  {
+  \renewcommand{\arraystretch}{2.5}
+  \begin{tabular}{ccc}
+    \includegraphics[height=1cm]{facebook} &
+    \includegraphics[height=1cm]{citrix} &
+    \includegraphics[height=1cm]{janestreet} \\
+    %&&\\
+    \includegraphics[height=1cm]{esper} &
+    \includegraphics[height=1cm]{galois} &
+    \includegraphics[height=1cm]{shiro} \\
+    %&&\\
+    \includegraphics[height=1cm]{ds} &
+    \includegraphics[height=1cm]{issuu} &
+  \end{tabular}
+  }
   % TODO
 \end{frame}
 
-\begin{frame}{OPAM stats: packages}
-  \begin{tikzpicture}
-    \begin{axis}[
-      xlabel=Time,
-      ylabel=Packages,
-      ymin=0,
-      xmin=2012-08-21,
-      %axis x line=bottom,
-      %axis y line=left,
-      enlargelimits=false,
-      %enlarge x limits=upper,
-      enlarge y limits=upper,
-      grid=major,
-      date coordinates in=x,
-      xticklabel={\month.\year},
-      xticklabel style={rotate=90},
-      legend entries={Total, Unique},
-      legend style={legend pos=north west},
-      width=\textwidth,
-      height=.8\textheight,
-      ytick={0,500,...,3500},
-      ]
-
-      \addplot [color=red,fill=red!50, fill opacity=0.8] table {packages.csv}\closedcycle;
-      \addplot [color=blue,fill=blue!50, fill opacity=0.6] table {unique-packages.csv}\closedcycle;
-    \end{axis}
-  \end{tikzpicture}
-\end{frame}
-
-\begin{frame}{OPAM stats: OPAM repository contributors}
+\begin{frame}{OPAM repository contributors}
   \begin{tikzpicture}
     \begin{axis}[
       xlabel=Time,
@@ -130,6 +125,38 @@
       \addplot [color=blue,fill=blue!50] table {contributors.csv}\closedcycle;
     \end{axis}
   \end{tikzpicture}
+\end{frame}
+
+\begin{frame}{Projects using OCaml}
+  You might have heard some of these names
+  \begin{multicols}{3}
+  \begin{itemize}
+    \item 0install
+    \item Pfft
+    \item Flow
+    \item Hack
+    \item Haxe
+    \item Rust (previously)
+    \item CompCert
+    \item Frama-C
+    \item FFTW
+    \item Unison
+    \item MLDonkey
+    \item Coq
+    \item Alt-Ergo
+    \item Opalang
+    \item Grenchman
+  \end{itemize}
+  \end{multicols}
+  OCaml is a great language for writing compilers.
+\end{frame}
+
+\begin{frame}{This talk}
+  So we saw that it seems to be pretty cool. Why is not everyone all over it?
+
+  Most difficult part: getting started.
+
+  Let me lend you a hand and give you some guidance.
 \end{frame}
 
 \section{Learning}
@@ -198,7 +225,7 @@
 \end{frame}
 
 \begin{frame}{Merlin in action}
-  I wonder what the List module supports?
+  I wonder what the \texttt{List} module supports?
 
   \pause
   \includegraphics[width=\textwidth]{vim_complete}
@@ -219,16 +246,16 @@
 
 \begin{frame}{Building OCaml code used to suck}
   \begin{itemize}
-    \item .ml/.mli: source files
-    \item .o: Compiled C modules
-    \item .cmo/.cmi: Compiled modules
-    \item .cma/.cmax: Compiled module archives, native archives
-    \item .cmt: Type information annotation
+    \item \texttt{.ml}/\texttt{.mli}: source files
+    \item \texttt{.o}: Compiled C implementations
+    \item \texttt{.cmo}/\texttt{.cmi}: Compiled modules
+    \item \texttt{.cma}/\texttt{.cmax}: Compiled module archives, native archives
+    \item \texttt{.cmt}/\texttt{.cmti}: Type information annotation
   \end{itemize}
   \begin{itemize}
-    \item ocamlc, ocamlc.opt
-    \item ocamlopt, ocamlopt.opt
-    \item ocamldep
+    \item \texttt{ocamlc}, \texttt{ocamlc.opt}
+    \item \texttt{ocamlopt}, \texttt{ocamlopt.opt}
+    \item \texttt{ocamldep}
     \item …
   \end{itemize}
   Need to compile each module, specify them in the proper order.
@@ -351,7 +378,7 @@ let _ = ignore @@ run test
 \end{frame}
 
 \begin{frame}[fragile]{Continuous integration}
-  "It works on \emph{my} machine" \pause Build it independently on Travis CI.
+  "It works on \emph{my} machine" \pause Better build it independently on Travis CI.
 
   Add this to your \texttt{.travis.yml}, ocaml-travisci-skeleton will take care of
   the rest (as long as your package is OPAMized).
@@ -378,6 +405,7 @@ env:
 \end{frame}
 
 \begin{frame}{OPAM}
+  Lessons learned from OASIS-DB.
   \begin{itemize}
     \item OCaml PAckage Manager
     \item Manages building \emph{compiler} and packages
@@ -393,6 +421,36 @@ env:
     \item Handles updates and removals
   \end{itemize}
 \end{frame}
+
+\begin{frame}{OPAM stats: packages}
+  \begin{tikzpicture}
+    \begin{axis}[
+      xlabel=Time,
+      ylabel=Packages,
+      ymin=0,
+      xmin=2012-08-21,
+      %axis x line=bottom,
+      %axis y line=left,
+      enlargelimits=false,
+      %enlarge x limits=upper,
+      enlarge y limits=upper,
+      grid=major,
+      date coordinates in=x,
+      xticklabel={\month.\year},
+      xticklabel style={rotate=90},
+      legend entries={Total, Unique},
+      legend style={legend pos=north west},
+      width=\textwidth,
+      height=.8\textheight,
+      ytick={0,500,...,3500},
+      ]
+
+      \addplot [color=red,fill=red!50, fill opacity=0.8] table {packages.csv}\closedcycle;
+      \addplot [color=blue,fill=blue!50, fill opacity=0.6] table {unique-packages.csv}\closedcycle;
+    \end{axis}
+  \end{tikzpicture}
+\end{frame}
+
 
 \section{Documenting}
 
@@ -423,13 +481,15 @@ env:
 
 \begin{frame}{Concurrency}
   Multicore OCaml not yet a thing.
+
+  TODO
 \end{frame}
 
 \begin{frame}{JVM}
-  .NET have F\# (basically OCaml for .NET), a statically typed ML. It's a serious
-  effort by Microsoft. \pause
+  .NET has F\# (basically OCaml for .NET), a statically typed ML. It's a serious
+  effort by Microsoft.
 
-  JVM users have… Yeti? Scala?
+  JVM users have… Yeti? Scala? \pause
 
   \begin{block}{OCaml-Java}
     \begin{itemize}
@@ -446,11 +506,25 @@ env:
 \section{What's missing}
 
 \begin{frame}{Debugging}
-  ocamldebug
+  \begin{itemize}
+    \item \texttt{ocamldebug} exists
+    \item Works on bytecode
+    \item Can breakpoint on \emph{time} and even travel back
+    \item Tends to step into Stdlib often
+    \item Can't display abstract values
+    \item Buggy
+  \end{itemize}
+  Print debugging to the rescue? Nah…
 \end{frame}
 
 \begin{frame}{Profiling}
-  ocamlprof, gprof
+  \begin{itemize}
+    \item \texttt{ocamlprof} and \texttt{gprof} exist
+    \item Work on byte/native code respectively
+    \item Not right granularity
+    \item Call count display incredibly inconvenient
+    \item Buggy
+  \end{itemize}
 \end{frame}
 
 \begin{frame}{Questions?}
